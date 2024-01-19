@@ -20,11 +20,11 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			&pm.InspectionPlantBusinessPartner,
 			&pm.InspectionPlant,
 			&pm.Product,
-			&pm.ValidityStartDate,
-			&pm.ValidityEndDate,
 			&pm.ProductSpecification,
 			&pm.InspectionSpecification,
 			&pm.InspectionPlanHeaderText,
+			&pm.CertificateAuthorityChain,
+			&pm.UsageControlChain,
 			&pm.CreationDate,
 			&pm.LastChangeDate,
 			&pm.IsMarkedForDeletion,
@@ -40,11 +40,11 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			InspectionPlantBusinessPartner: data.InspectionPlantBusinessPartner,
 			InspectionPlant:                data.InspectionPlant,
 			Product:                        data.Product,
-			ValidityStartDate:              data.ValidityStartDate,
-			ValidityEndDate:                data.ValidityEndDate,
 			ProductSpecification:           data.ProductSpecification,
 			InspectionSpecification:        data.InspectionSpecification,
 			InspectionPlanHeaderText:       data.InspectionPlanHeaderText,
+			CertificateAuthorityChain:		data.CertificateAuthorityChain,
+			UsageControlChain:		  		data.UsageControlChain,
 			CreationDate:                   data.CreationDate,
 			LastChangeDate:                 data.LastChangeDate,
 			IsMarkedForDeletion:            data.IsMarkedForDeletion,
@@ -56,6 +56,188 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 	}
 
 	return &header, nil
+}
+
+func ConvertToSpecGeneral(rows *sql.Rows) (*[]SpecGeneral, error) {
+	defer rows.Close()
+	specGeneral := make([]SpecGeneral, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.SpecGeneral{}
+
+		err := rows.Scan(
+			&pm.InspectionPlan,
+			&pm.HeatNumber,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &specGeneral, err
+		}
+
+		data := pm
+		specGeneral = append(specGeneral, SpecGeneral{
+			InspectionPlan:       	data.InspectionPlan,
+			HeatNumber:          	data.HeatNumber,
+			CreationDate:           data.CreationDate,
+			LastChangeDate:         data.LastChangeDate,
+			IsMarkedForDeletion:    data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &specGeneral, nil
+	}
+
+	return &specGeneral, nil
+}
+
+func ConvertToSpecDetail(rows *sql.Rows) (*[]SpecDetail, error) {
+	defer rows.Close()
+	specDetail := make([]SpecDetail, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.SpecDetail{}
+
+		err := rows.Scan(
+			&pm.InspectionPlan,
+			&pm.SpecType,
+			&pm.UpperLimitValue,
+			&pm.LowerLimitValue,
+			&pm.StandardValue,
+			&pm.SpecTypeUnit,
+			&pm.Formula,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &specDetail, err
+		}
+
+		data := pm
+		specDetail = append(specDetail, SpecDetail{
+			InspectionPlan:      	data.InspectionPlan,
+			SpecType:            	data.SpecType,
+			UpperLimitValue:     	data.UpperLimitValue,
+			LowerLimitValue:     	data.LowerLimitValue,
+			StandardValue:       	data.StandardValue,
+			SpecTypeUnit:        	data.SpecTypeUnit,
+			Formula:	         	data.Formula,
+			CreationDate:           data.CreationDate,
+			LastChangeDate:         data.LastChangeDate,
+			IsMarkedForDeletion:    data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &specDetail, nil
+	}
+
+	return &specDetail, nil
+}
+
+func ConvertToComponentComposition(rows *sql.Rows) (*[]ComponentComposition, error) {
+	defer rows.Close()
+	componentComposition := make([]ComponentComposition, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.ComponentComposition{}
+
+		err := rows.Scan(
+			&pm.InspectionPlan,
+			&pm.ComponentCompositionType,
+			&pm.ComponentCompositionUpperLimitInPercent,
+			&pm.ComponentCompositionLowerLimitInPercent,
+			&pm.ComponentCompositionStandardValueInPercent,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &componentComposition, err
+		}
+
+		data := pm
+		componentComposition = append(componentComposition, ComponentComposition{
+			InspectionPlan:                             data.InspectionPlan,
+			ComponentCompositionType:                   data.ComponentCompositionType,
+			ComponentCompositionUpperLimitInPercent:     data.ComponentCompositionUpperLimitInPercent,
+			ComponentCompositionLowerLimitInPercent:    data.ComponentCompositionLowerLimitInPercent,
+			ComponentCompositionStandardValueInPercent: data.ComponentCompositionStandardValueInPercent,
+			CreationDate:           					data.CreationDate,
+			LastChangeDate:         					data.LastChangeDate,
+			IsMarkedForDeletion:    					data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &componentComposition, nil
+	}
+
+	return &componentComposition, nil
+}
+
+func ConvertToInspection(rows *sql.Rows) (*[]Inspection, error) {
+	defer rows.Close()
+	inspection := make([]Inspection, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.Inspection{}
+
+		err := rows.Scan(
+			&pm.InspectionPlan,
+			&pm.Inspection,
+			&pm.InspectionType,
+			&pm.InspectionTypeValueUnit,
+			&pm.InspectionTypePlannedValue,
+			&pm.InspectionTypeCertificateType,
+			&pm.InspectionTypeCertificateValueInText,
+			&pm.InspectionTypeCertificateValueInQuantity,
+			&pm.InspectionPlanInspectionText,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &inspection, err
+		}
+
+		data := pm
+		inspection = append(inspection, Inspection{
+			InspectionPlan:                           data.InspectionPlan,
+			Inspection:                               data.Inspection,
+			InspectionType:                           data.InspectionType,
+			InspectionTypeValueUnit:                  data.InspectionTypeValueUnit,
+			InspectionTypePlannedValue:               data.InspectionTypePlannedValue,
+			InspectionTypeCertificateType:            data.InspectionTypeCertificateType,
+			InspectionTypeCertificateValueInText:     data.InspectionTypeCertificateValueInText,
+			InspectionTypeCertificateValueInQuantity: data.InspectionTypeCertificateValueInQuantity,
+			InspectionPlanInspectionText:             data.InspectionPlanInspectionText,
+			CreationDate:           				  data.CreationDate,
+			LastChangeDate:         				  data.LastChangeDate,
+			IsMarkedForDeletion:    				  data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &inspection, nil
+	}
+
+	return &inspection, nil
 }
 
 func ConvertToOperation(rows *sql.Rows) (*[]Operation, error) {
@@ -119,6 +301,10 @@ func ConvertToOperation(rows *sql.Rows) (*[]Operation, error) {
 			&pm.StandardDeliveryDuration,
 			&pm.StandardDeliveryDurationUnit,
 			&pm.StandardOperationScrapPercent,
+			&pm.PlannedOperationStandardValue,
+			&pm.PlannedOperationLowerValue,
+			&pm.PlannedOperationUpperValue,
+			&pm.PlannedOperationValueUnit,
 			&pm.CostElement,
 			&pm.ValidityStartDate,
 			&pm.ValidityEndDate,
@@ -184,6 +370,10 @@ func ConvertToOperation(rows *sql.Rows) (*[]Operation, error) {
 			StandardDeliveryDuration:                 data.StandardDeliveryDuration,
 			StandardDeliveryDurationUnit:             data.StandardDeliveryDurationUnit,
 			StandardOperationScrapPercent:            data.StandardOperationScrapPercent,
+			PlannedOperationStandardValue:            data.PlannedOperationStandardValue,
+			PlannedOperationLowerValue:            	  data.PlannedOperationLowerValue,
+			PlannedOperationUpperValue:            	  data.PlannedOperationUpperValue,
+			PlannedOperationValueUnit:            	  data.PlannedOperationValueUnit,
 			CostElement:                              data.CostElement,
 			ValidityStartDate:                        data.ValidityStartDate,
 			ValidityEndDate:                          data.ValidityEndDate,

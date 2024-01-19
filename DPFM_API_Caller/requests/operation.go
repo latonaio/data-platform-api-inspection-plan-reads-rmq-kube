@@ -52,10 +52,14 @@ type Operation struct {
 	StandardDeliveryDuration                 *float32 `json:"StandardDeliveryDuration"`
 	StandardDeliveryDurationUnit             *string  `json:"StandardDeliveryDurationUnit"`
 	StandardOperationScrapPercent            *float32 `json:"StandardOperationScrapPercent"`
+	PlannedOperationStandardValue            *float32 `json:"PlannedOperationStandardValue"`
+	PlannedOperationLowerValue            	 *float32 `json:"PlannedOperationLowerValue"`
+	PlannedOperationUpperValue            	 *float32 `json:"PlannedOperationUpperValue"`
+	PlannedOperationValueUnit            	 *string  `json:"PlannedOperationValueUnit"`
 	CostElement                              *string  `json:"CostElement"`
 	ValidityStartDate                        *string  `json:"ValidityStartDate"`
 	ValidityEndDate                          *string  `json:"ValidityEndDate"`
-	CreationDate                             string   `json:"CreationDate"`
-	LastChangeDate                           string   `json:"LastChangeDate"`
-	IsMarkedForDeletion                      *bool    `json:"IsMarkedForDeletion"`
+	CreationDate                   			 string   `json:"CreationDate"`
+	LastChangeDate                 			 string   `json:"LastChangeDate"`
+	IsMarkedForDeletion            			 *bool    `json:"IsMarkedForDeletion"`
 }

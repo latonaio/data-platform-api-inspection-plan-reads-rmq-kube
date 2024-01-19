@@ -1,7 +1,7 @@
 # data-platform-api-inspection-plan-reads-rmq-kube
 
 data-platform-api-inspection-plan-reads-rmq-kube は、周辺業務システム　を データ連携基盤 と統合することを目的に、API で品質検査計画データを取得するマイクロサービスです。  
-https://xxx.xxx.io/api/API_ORDERS_SRV/reads/
+https://xxx.xxx.io/api/API_INSPECTION_PLAN_SRV/reads/
 
 ## 動作環境
 
@@ -13,14 +13,17 @@ data-platform-api-inspection-plan-reads-rmq-kube の動作環境は、次の通�
 ## 本レポジトリ が 対応する API サービス
 data-platform-api-inspection-plan-reads-rmq-kube が対応する APIサービス は、次のものです。
 
-APIサービス URL: https://xxx.xxx.io/api/API_ORDERS_SRV/reads/
+APIサービス URL: https://xxx.xxx.io/api/API_INSPECTION_PLAN_SRV/reads/
 
 ## 本レポジトリ に 含まれる API名
 data-platform-api-inspection-plan-reads-rmq-kube には、次の API をコールするためのリソースが含まれています。  
 
-* A_Header（データ連携基盤 品質検査計画 - ヘッダデータ）
-* A_Inspection（データ連携基盤 品質検査計画 - 品質検査）
-* A_Operation（データ連携基盤 品質検査計画 - 作業）
+* A_Header（品質検査計画 - ヘッダ）
+* A_SpecGeneral（品質検査計画 - スペック一般）
+* A_SpecDetail（品質検査計画 - スペック詳細）
+* A_ComponentComposition（品質検査計画 - 構成物質）
+* A_Inspection（品質検査計画 - 品質検査）
+* A_Operation（品質検査計画 - 作業）
 
 ## API への 値入力条件 の 初期値
 data-platform-api-inspection-plan-reads-rmq-kube において、API への値入力条件の初期値は、入力ファイルレイアウトの種別毎に、次の通りとなっています。  
@@ -36,7 +39,7 @@ accepter において 下記の例のように、データの種別（＝APIの�
 ここでは、"Header" が指定されています。    
   
 ```
-	"api_schema": "DPFMOrdersReads",
+	"api_schema": "DPFMInspectionPlanReads",
 	"accepter": ["Header"],
 ```
   
@@ -45,7 +48,7 @@ accepter において 下記の例のように、データの種別（＝APIの�
 全データを取得する場合、sample.json は以下のように記載します。  
 
 ```
-	"api_schema": "DPFMOrdersReads",
+	"api_schema": "DPFMInspectionPlanReads",
 	"accepter": ["All"],
 ```
 
@@ -75,7 +78,7 @@ func (c *DPFMAPICaller) AsyncOrdersReads(
 ## Output  
 本マイクロサービスでは、[golang-logging-library-for-data-platform](https://github.com/latonaio/golang-logging-library-for-data-platform) により、以下のようなデータがJSON形式で出力されます。  
 以下の sample.json の例は 品質検査計画 の ヘッダデータ が取得された結果の JSON の例です。  
-以下の項目のうち、"OrderID" ～ "IsMarkedForDeletion" は、/DPFM_API_Output_Formatter/type.go 内 の Type Header {} による出力結果です。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。  
+以下の項目のうち、"InspectionPlan" ～ "IsMarkedForDeletion" は、/DPFM_API_Output_Formatter/type.go 内 の Type Header {} による出力結果です。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。  
 
 ```
 XXX
